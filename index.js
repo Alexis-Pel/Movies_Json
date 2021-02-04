@@ -37,12 +37,11 @@ function search_args(){
         }
         else if (process.argv[1] == "search_key_word"){
             if(process.argv[3] != null){
-                search_key_word(process.argv[3]);
             }
             else{
                 process.argv[3] = "";
-                search_key_word(process.argv[3]);
             }
+            search_key_word(process.argv[3]);
         }
     }
     else{

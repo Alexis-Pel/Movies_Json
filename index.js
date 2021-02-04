@@ -12,7 +12,7 @@ function start(){
 function search_args(){
     write("log.txt", "Arguments " + process.argv)
     if(process.argv[0] == "-action"){
-        if (process.argv[2]!= input){
+        if (process.argv[2]!= input && process.argv[2] != "./movies.json"){
             input = process.argv[2];
             try {
                 moviesTab = require(input);
@@ -44,6 +44,9 @@ function search_args(){
                 search_key_word(process.argv[3]);
             }
         }
+        if(process.argv[1] == "search_date" ){
+            search_date(); 
+         }
     }
     else{
         console.log("Erreur, veuillez réessayer")
@@ -134,5 +137,40 @@ function write(out, thingToWrite) {
     fs.appendFile(out, thingToWrite + "\n", function (err) {
   if (err) return console.log(err);
 });
+}
+function search_date(){
+    
+    if(typeof date == "string" ){
+        return "l'année choisis n'est pas au bon format: \nle format doit être à cette exemple: '1970' ";
+    }
+    if(process.argv[4] == "true"){
+        search_date_true(0);
+    }
+    if(process.argv[4] == "false"){
+        let date = process.argv[3];
+        for(let i =0; i < moviesTab.length; i++){
+            let dateR = moviesTab[i].release_date;
+            let year = 1970 + Math.round(dateR / 31536000);
+            if(date == year){
+                console.log(moviesTab[i]);
+            }
+        }
+    }
+}
+function search_date_true(i){
+    let date = process.argv[3];
+        let dateR = moviesTab[i].release_date;
+            let year = 1970 + Math.round(dateR / 31536000);
+            if(date == year){
+                console.log(moviesTab[i]);
+                if(i < moviesTab.length-1){
+                    search_date_true(i+1);
+                }
+            }
+            else{
+                if(i < moviesTab.length-1){
+                    search_date_true(i+1);
+                }
+            }
 }
 start();

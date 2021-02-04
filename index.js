@@ -37,16 +37,19 @@ function sort_date(){
 function sort_titre(){
     let tab = [];
     for (let index = 0; index < moviesTab.length; index++) {
-        tab.push(moviesTab[index]);   
+        tab.push(moviesTab[index]);
     }
     tab = sort(tab);
-    tab = JSON.stringify(tab);
-    write("./sort_titre.json", tab )
+    for (let index = 0; index < tab.length; index++) {
+        tab[index] = JSON.stringify(tab[index]);
+        write("./sort_titre.json", tab[index]);
+
+    }
 }
 
 function write(out, thingToWrite) {
     let fs = require('fs');
-    fs.writeFile(out, thingToWrite + "\n", function (err) {
+    fs.appendFile(out, thingToWrite + "\n", function (err) {
   if (err) return console.log(err);
 });
 }

@@ -1,7 +1,0 @@
-<<<<<<< HEAD
-process.argv.shift();
-process.argv.shift();
-console.log(process.argv);
-=======
-console.log(process.argv);
->>>>>>> 089ed639ace574bad87c42189757e401b51fc3ec

@@ -35,19 +35,45 @@ function search_args(){
         else if (process.argv[1] == "transform") {
             transform();
         }
+        else if (process.argv[1] == "search_key_word"){
+            if(process.argv[3] != null){
+                search_key_word(process.argv[3]);
+            }
+            else{
+                process.argv[3] = "";
+                search_key_word(process.argv[3]);
+            }
+        }
     }
     else{
         console.log("Erreur, veuillez réessayer")
     }
 }
-function transform(){
-    for (i = 0; i < moviesTab.length; i++) {
-        var d =new Date(moviesTab[i].release_date);
-        d = d.getFullYear;
-        moviesTab[i].title = moviesTab[i].title + " (" + d + ")";
-        moviesTab[i] = JSON.stringify(moviesTab[i]);
-        write(output, moviesTab[i])
+
+function search_key_word(keyword){
+    write("log.txt","Search By : Keyword")
+    tab = moviesTab;
+    for (let i = 0; i < tab.length-1; i++) {
+        let index = tab[i].title;
+        index = JSON.stringify(index);
+        if (index.includes(keyword)){
+            console.log(tab[i])
+        }
     }
+}
+function transform(){
+    let start = new Date().getTime();
+
+    for (i = 0; i < moviesTab.length; i++) {
+        let fDate = moviesTab[i].release_date;
+        let annéeMovie = Math.floor((((((fDate) / 60) / 60) / 24) / 365) + 1970);
+        var d = new Date(moviesTab[i].release_date);
+        moviesTab[i].title = moviesTab[i].title + " (" + annéeMovie + ")";
+        moviesTab[i] = JSON.stringify(moviesTab[i]) + "\n";
+    }
+    write(output,moviesTab)
+    let stop = new Date().getTime();
+    write("log.txt", ("Time exceeded : " + (stop - start) /60) + " secondes")
 }
 function sort(tab){
     write("log.txt","Sort By : Title")
@@ -84,11 +110,11 @@ function sort_date(){
     tab = sort_date_now(moviesTab);
     write("log.txt","Sort finished")
     for (let index = 0; index < tab.length; index++) {
-        tab[index] = JSON.stringify(tab[index]);
-        write(output, tab[index]);
+        tab[index] = JSON.stringify(tab[index]) + "\n";
     }
+    write(output,tab)
     let stop = new Date().getTime();
-    write("log.txt", ("Time exceeded : " + (stop - start)))
+    write("log.txt", ("Time exceeded : " + (stop - start) /60) + " secondes")
 }
 function sort_titre(){
     let start = new Date().getTime();
@@ -96,11 +122,11 @@ function sort_titre(){
     tab = sort(moviesTab);
     write("log.txt","Sort finished")
     for (let index = 0; index < tab.length; index++) {
-        tab[index] = JSON.stringify(tab[index]);
-        write(output, tab[index]);
+        tab[index] = JSON.stringify(tab[index]) + "\n";
     }
+    write(output,tab)
     let stop = new Date().getTime();
-    write("log.txt", ("Time exceeded : " + (stop - start)))
+    write("log.txt", ("Time exceeded : " + (stop - start) /60) + " secondes")
 }
 
 function write(out, thingToWrite) {

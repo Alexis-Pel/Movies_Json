@@ -1,7 +1,7 @@
 process.argv.shift();
 process.argv.shift();
 var moviesTab = require('./movies.json')
-var output = "./output";
+var output = "./output.json";
 var input = "./movies.json"
 
 function start(){
@@ -14,6 +14,7 @@ function search_args(){
     if(process.argv[0] == "-action"){
         if (process.argv[2]!= input){
             input = process.argv[2];
+            write("log.txt","input : " + input)
             try {
                 moviesTab = require(input);
             } catch (error) {
@@ -23,21 +24,36 @@ function search_args(){
         if(process.argv[1] == "sort_titre"){
             if(process.argv[3]!= output){
                 output = process.argv[3];
+                write("log.txt","output : " + output)
             }
             sort_titre();
         }
         else if (process.argv[1] == "sort_date"){
             if(process.argv[3]!= output){
                 output = process.argv[3];
+                write("log.txt","output : " + output)
             }
             sort_date();
+        }
+        else if (process.argv[1] == "transform") {
+            write("log.txt","output : " + output)
+            transform();
         }
     }
     else{
         console.log("Erreur, veuillez réessayer")
     }
 }
-
+function transform(){
+    write("log.txt","Transform")
+    for (i = 0; i < moviesTab.length; i++) {
+        var d =new Date(moviesTab[i].release_date);
+        let year = d.getFullYear();
+        moviesTab[i].title = moviesTab[i].title + " (" + year + ")";
+        moviesTab[i] = JSON.stringify(moviesTab[i]);
+        write(output, moviesTab[i])
+    }
+}
 function sort(tab){
     write("log.txt","Sort By : Title")
     for (let i = tab.length-1; i > 1; i--) {

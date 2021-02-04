@@ -14,6 +14,7 @@ function search_args(){
     if(process.argv[0] == "-action"){
         if (process.argv[2]!= input){
             input = process.argv[2];
+            write("log.txt","input : " + input)
             try {
                 moviesTab = require(input);
             } catch (error) {
@@ -23,16 +24,19 @@ function search_args(){
         if(process.argv[1] == "sort_titre"){
             if(process.argv[3]!= output){
                 output = process.argv[3];
+                write("log.txt","output : " + output)
             }
             sort_titre();
         }
         else if (process.argv[1] == "sort_date"){
             if(process.argv[3]!= output){
                 output = process.argv[3];
+                write("log.txt","output : " + output)
             }
             sort_date();
         }
         else if (process.argv[1] == "transform") {
+            write("log.txt","output : " + output)
             transform();
         }
     }
@@ -41,10 +45,11 @@ function search_args(){
     }
 }
 function transform(){
+    write("log.txt","Transform")
     for (i = 0; i < moviesTab.length; i++) {
         var d =new Date(moviesTab[i].release_date);
-        d = d.getFullYear;
-        moviesTab[i].title = moviesTab[i].title + " (" + d + ")";
+        let year = d.getFullYear();
+        moviesTab[i].title = moviesTab[i].title + " (" + year + ")";
         moviesTab[i] = JSON.stringify(moviesTab[i]);
         write(output, moviesTab[i])
     }

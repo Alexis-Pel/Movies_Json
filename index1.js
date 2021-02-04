@@ -1,5 +1,6 @@
 process.argv.shift();
 process.argv.shift();
+var output = "./output";
 
 var moviesTab = require("./movies.json");
 
@@ -16,13 +17,16 @@ function search_args() {
 }
 
 function date() {
-  if (process.argv[1] == "./movies.json") {
-    const date = moviesTab[1].release_date;
-    console.log(moviesTab[1].title + " ");
+  if (process.argv[2] == "./movies.json") {
+    for (i = 0; i < moviesTab.length; i++) {
+      let titre = moviesTab[i].title;
+      let NDate = moviesTab[i].release_date;
+      let Année = Math.floor(NDate / 60 / 60 / 24 / 365 + 1970);
+      let Ntitre = titre + " (" + Année + ")";
+      console.log(Ntitre);
+    }
   }
 }
-var time = new Date(-2562883200);
-time.toDateString();
-console.log(time.getFullYear());
 
 search_args();
+date();

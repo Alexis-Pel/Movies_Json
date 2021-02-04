@@ -1,4 +1,4 @@
-rocess.argv.shift();
+process.argv.shift();
 process.argv.shift();
 
 var moviesTab = require("./movies.json");
@@ -21,5 +21,8 @@ function date() {
     console.log(moviesTab[1].title + " ");
   }
 }
+var time = new Date(-2562883200);
+time.toDateString();
+console.log(time.getFullYear());
 
 search_args();

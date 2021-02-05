@@ -1,6 +1,7 @@
 process.argv.shift();
 process.argv.shift();
-const fs = require('fs')
+const fs = require('fs');
+const { mkdir } = require('fs/promises');
 const request = require('request')
 var moviesTab = require("./movies.json");
 var output = "./output.json";
@@ -241,47 +242,6 @@ function search_by_year_true(i) {
     }
   }
 }
-<<<<<<< HEAD
-//fonction pour download une image
-const download = (url, path, callback) => { 
-    request.head(url, (err, res, body) => {
-        request(url) .pipe(fs.createWriteStream(path)) .on('close', callback)
-    }) 
-}
-//fonction pour créer un dossier et rajouter un image à ce dernier
-function img_save(){
-    let start = new Date().getTime();
-    let arg1 = process.argv[1];
-    let arg2 = process.argv[3];
-
-    try {
-        fs.mkdir(arg1, (err) => { 
-            if (err) { 
-                return console.error(err); 
-            } 
-            console.log('Le fichier '+arg1+' à bien été créer!'); 
-        });
-        for(let t=0;t<moviesTab.length;t++){
-            if(arg2 == moviesTab[t].title){
-                let url = moviesTab[t].poster;
-            let path = arg1;
-            download(url, path+"/image.png", () => { console.log('Poster bien télécharger!')});
-            }
-        }
-        let stop = new Date().getTime();
-        write("log.txt", "Time exceeded : " + (stop - start) / 60 + " secondes");
-    } catch (error) {
-        for(let t=0;t<moviesTab.length;t++){
-            if(arg2 == moviesTab[t].title){
-                let url = moviesTab[t].poster;
-            let path = arg1;
-            download(url, path+"/image.png", () => { console.log('Poster bien télécharger!')});
-            }
-        }
-        let stop = new Date().getTime();
-        write("log.txt", "Time exceeded : " + (stop - start) / 60 + " secondes");
-    }    
-=======
 
 /**
  * Fonction qui permet de telecharger les images
@@ -297,7 +257,6 @@ function download_images(tab){
         const path = save_path + tab[index].title + '.png';
         download(url, path, () => {console.log('Done!')})
     }
->>>>>>> 7d8f374c72a507e5eb482610234aa5e1c80acca5
 }
 
 start();

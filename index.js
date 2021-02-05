@@ -1,6 +1,5 @@
 process.argv.shift();
 process.argv.shift();
-const { PassThrough } = require("stream");
 const fs = require('fs')
 const request = require('request')
 var moviesTab = require("./movies.json");
@@ -243,6 +242,10 @@ function search_by_year_true(i) {
   }
 }
 
+/**
+ * Fonction qui permet de telecharger les images
+ * @param {*} tab le tableau de films
+ */
 function download_images(tab){
     console.log(tab)
     const download = (url, path, callback) => { request.head(url, (err, res, body) => {
@@ -250,7 +253,7 @@ function download_images(tab){
     })}
     for (let index = 0; index < tab.length; index++){
         const url = tab[index].poster;
-        const path = './images/' + tab[index].title + '.png';
+        const path = save_path + tab[index].title + '.png';
         download(url, path, () => {console.log('Done!')})
     }
 }

@@ -69,7 +69,9 @@ function search_args() {
  * @param {*} genre le genre à rechercher
  */
 function search_key_word(keyword, genre) {
-  write("log.txt", "Search By : Keyword");
+  write("log.txt", "Search By : Keyword, Genre");
+  write("log.txt", "Keyword : " + keyword)
+  write("log.txt", "Genre : " + genre)
   tab = moviesTab;
   for (let i = 0; i < tab.length - 1; i++) {
     let index = tab[i].title;
@@ -90,6 +92,7 @@ function search_key_word(keyword, genre) {
  * Cette fonction permet de transformer des secondes en années et de l'ajouter aprés leur titre
  */
 function transform() {
+    write("log.txt", "Tranform")
   let start = new Date().getTime();
 
   for (i = 0; i < moviesTab.length; i++) {

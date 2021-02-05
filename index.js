@@ -46,12 +46,12 @@ function search_args(){
                 return;
             }
         }
-        if(process.argv[1] == "search_by_year" ){
+        if(process.argv[1] == "search_date" ){
             search_by_year(); 
          }
     }
-    else{
-        console.log("Erreur, veuillez réessayer")
+    if(process.argv[0] == "-save"){
+        console.log(process.argv[0]);
     }
 }
 
@@ -185,4 +185,6 @@ function search_by_year_true(i){
                 }
             }
 }
+
+
 start();

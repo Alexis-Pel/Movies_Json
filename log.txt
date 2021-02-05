@@ -1,0 +1,5 @@
+------------------------------------------------------
+Keyword : rec
+Search By : Keyword, Genre
+Arguments -save,-action,search_key_word,./movies.json,rec,Horror
+Genre : Horror

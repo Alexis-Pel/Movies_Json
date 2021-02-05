@@ -1,11 +1,13 @@
 process.argv.shift();
 process.argv.shift();
-const { PassThrough } = require("stream");
-const fs = require('fs')
+const fs = require('fs');
+const { mkdir } = require('fs/promises');
 const request = require('request')
 var moviesTab = require("./movies.json");
 var output = "./output.json";
 var input = "./movies.json";
+var download = false;
+var save_path = "./images/"
 
 /**
  * Cette fonction démarre la fonction search_args()
@@ -20,51 +22,55 @@ function start() {
  * @return {*} None
  */
 function search_args() {
+    let start = 0;
   write("log.txt", "Arguments " + process.argv);
-  if (process.argv[0] == "-action") {
-    if (process.argv[2] != input && process.argv[2] != "./movies.json") {
-      input = process.argv[2];
+  if(process.argv[0] == "-save"){
+    if(process.argv[1] != "-action"){
+        start = 2;
+        save_path = process.argv[1];
+    }
+    else{
+        start = 1;
+    }
+    download = true;
+  }
+  if (process.argv[start] == "-action") {
+    if (process.argv[start + 2] != input && process.argv[start + 2] != "./movies.json") {
+      input = process.argv[start + 2];
       try {
         moviesTab = require(input);
       } catch (error) {
-        console.log("Erreur, le fichier séléctionné n'est pas valide");
       }
     }
-    if (process.argv[1] == "sort_titre") {
-      if (process.argv[3] != output) {
-        output = process.argv[3];
+    if (process.argv[start + 1] == "sort_titre") {
+      if (process.argv[start + 3] != output) {
+        output = process.argv[start + 3];
       }
       sort_titre();
-    } else if (process.argv[1] == "sort_date") {
-      if (process.argv[3] != output) {
-        output = process.argv[3];
+    } else if (process.argv[start + 1] == "sort_date") {
+      if (process.argv[start + 3] != output) {
+        output = process.argv[start + 3];
       }
       sort_date();
-    } else if (process.argv[1] == "transform") {
+    } else if (process.argv[start+1] == "transform") {
       transform();
-    } else if (process.argv[1] == "search_key_word") {
-      if (process.argv[3] != null) {
-        if (process.argv[4] != null) {
-          search_key_word(process.argv[3], process.argv[4]);
+    } else if (process.argv[start+1] == "search_key_word") {
+      if (process.argv[start+3] != null) {
+        if (process.argv[start+4] != null) {
+          search_key_word(process.argv[start+3], process.argv[start+4]);
         }
-        if(process.argv[1] == "search_date" ){
+        if(process.argv[start+1] == "search_date" ){
             search_by_year(); 
          }
         }
     }
-    if (process.argv[1] == "search_date") {
+    if (process.argv[start+1] == "search_date") {
       search_by_year();
     }
     if(process.argv[1] == "color"){
         color_dominante();
     }
   } 
-  if(process.argv[0] == "-save"){
-    console.log(process.argv[1]);
-    img_save();
-  } else {
-    console.log("Erreur, veuillez réessayer");
-  }
 }
 /**
  * Cette fonction permet d'afficher les films correspondants au mot clé et au genre
@@ -76,6 +82,7 @@ function search_key_word(keyword, genre) {
   write("log.txt", "Keyword : " + keyword)
   write("log.txt", "Genre : " + genre)
   tab = moviesTab;
+  let save_tab = [];
   for (let i = 0; i < tab.length - 1; i++) {
     let index = tab[i].title;
     let movieGenres = tab[i].genres;
@@ -85,17 +92,21 @@ function search_key_word(keyword, genre) {
         for (let index = 0; index < movieGenres.length; index++) {
           if (movieGenres[index] == genre) {
             console.log(tab[i]);
+            save_tab.push(tab[i]);
           }
         }
       }
     }
   }
+  if(download == true) {
+    download_images(save_tab);
+}
 }
 /**
  * Cette fonction permet de transformer des secondes en années et de l'ajouter aprés leur titre
  */
 function transform() {
-    write("log.txt", "Tranform")
+    write("log.txt", "Transform")
   let start = new Date().getTime();
 
   for (i = 0; i < moviesTab.length; i++) {
@@ -194,6 +205,7 @@ function write(out, thingToWrite) {
   });
 }
 function search_by_year() {
+    let save_tab = [];
   if (typeof date == "string") {
     return "l'année choisis n'est pas au bon format: \nle format doit être à cette exemple: '1970' ";
   }
@@ -207,8 +219,12 @@ function search_by_year() {
       let year = 1970 + Math.round(dateR / 31536000);
       if (date == year) {
         console.log(moviesTab[i]);
+        save_tab.push(tab[i]);
       }
     }
+    if(download == true) {
+      download_images(save_tab);
+  }
   }
   let stop = new Date().getTime();
   write("log.txt", "Time exceeded : " + (stop - start) / 60 + " secondes");

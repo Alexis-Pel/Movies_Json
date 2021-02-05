@@ -55,6 +55,9 @@ function search_args() {
     if (process.argv[1] == "search_date") {
       search_by_year();
     }
+    if(process.argv[1] == "color"){
+        color_dominante();
+    }
   } 
   if(process.argv[0] == "-save"){
     console.log(process.argv[1]);
@@ -235,36 +238,39 @@ const download = (url, path, callback) => {
 //fonction pour créer un dossier et rajouter un image à ce dernier
 function img_save(){
     let start = new Date().getTime();
+    try {
+        create_File();
+        donwload_img();
+    } catch (error) {
+        donwload_img();
+    }   
+    let stop = new Date().getTime();
+    write("log.txt", "Time exceeded : " + (stop - start) / 60 + " secondes"); 
+}
+//fonction pour calculer la color dominante
+function color_dominante(){
+    
+}
+//fonction pour créer un dossier
+function create_File(){
+    let arg1 = process.argv[1];
+    fs.mkdir(arg1, (err) => { 
+        if (err) { 
+            return console.error(err); 
+        } 
+        console.log('Le fichier '+arg1+' à bien été créer!'); 
+    });
+}
+//fonction pour télécharger une image
+function donwload_img(){
     let arg1 = process.argv[1];
     let arg2 = process.argv[3];
-
-    try {
-        fs.mkdir(arg1, (err) => { 
-            if (err) { 
-                return console.error(err); 
-            } 
-            console.log('Le fichier '+arg1+' à bien été créer!'); 
-        });
-        for(let t=0;t<moviesTab.length;t++){
-            if(arg2 == moviesTab[t].title){
-                let url = moviesTab[t].poster;
-            let path = arg1;
-            download(url, path+"/image.png", () => { console.log('Poster bien télécharger!')});
-            }
+    for(let t=0;t<moviesTab.length;t++){
+        if(arg2 == moviesTab[t].title){
+            let url = moviesTab[t].poster;
+        let path = arg1;
+        download(url, path+"/image.png", () => { console.log('Poster bien télécharger!')});
         }
-        let stop = new Date().getTime();
-        write("log.txt", "Time exceeded : " + (stop - start) / 60 + " secondes");
-    } catch (error) {
-        for(let t=0;t<moviesTab.length;t++){
-            if(arg2 == moviesTab[t].title){
-                let url = moviesTab[t].poster;
-            let path = arg1;
-            download(url, path+"/image.png", () => { console.log('Poster bien télécharger!')});
-            }
-        }
-        let stop = new Date().getTime();
-        write("log.txt", "Time exceeded : " + (stop - start) / 60 + " secondes");
-    }    
+    }
 }
-
 start();

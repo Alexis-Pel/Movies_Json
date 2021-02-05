@@ -148,13 +148,18 @@ function write(out, thingToWrite) {
   if (err) return console.log(err);
 });
 }
+<<<<<<< HEAD
 function search_by_year(){
     
+=======
+function search_date(){
+    let start = new Date().getTime();
+>>>>>>> 361a1b171fa8b6c7a3523e6041ba9dcf6b5561dc
     if(typeof date == "string" ){
         return "l'année choisis n'est pas au bon format: \nle format doit être à cette exemple: '1970' ";
     }
     if(process.argv[4] == "true"){
-        search_by_year(0);
+        search_(0);
     }
     if(process.argv[4] == "false"){
         let date = process.argv[3];
@@ -169,19 +174,19 @@ function search_by_year(){
     let stop = new Date().getTime();
     write("log.txt", ("Time exceeded : " + (stop - start) /60) + " secondes")
 }
-function search_by_year_true(i){
+function search_(i){
     let date = process.argv[3];
         let dateR = moviesTab[i].release_date;
             let year = 1970 + Math.round(dateR / 31536000);
             if(date == year){
                 console.log(moviesTab[i]);
                 if(i < moviesTab.length-1){
-                    search_by_year_true(i+1);
+                    search_(i+1);
                 }
             }
             else{
                 if(i < moviesTab.length-1){
-                    search_by_year_true(i+1);
+                    search_(i+1);
                 }
             }
 }

@@ -5,11 +5,18 @@ var moviesTab = require('./movies.json')
 var output = "./output.json";
 var input = "./movies.json"
 
+/**
+ * Cette fonction démarre la fonction search_args()
+ */
 function start(){
     write("log.txt", "------------------------------------------------------")
     search_args()
 }
 
+/**
+ * Cette fonction recherche les arguments et lance les fonction correspondantes
+ * @return {*} None
+ */
 function search_args(){
     write("log.txt", "Arguments " + process.argv)
     if(process.argv[0] == "-action"){
@@ -54,7 +61,11 @@ function search_args(){
         console.log("Erreur, veuillez réessayer")
     }
 }
-
+/**
+ * Cette fonction permet d'afficher les films correspondants au mot clé et au genre
+ * @param {*} keyword le mot clé à rechercher
+ * @param {*} genre le genre à rechercher
+ */
 function search_key_word(keyword, genre){
     write("log.txt","Search By : Keyword")
     tab = moviesTab;
@@ -88,6 +99,12 @@ function transform(){
     let stop = new Date().getTime();
     write("log.txt", ("Time exceeded : " + (stop - start) /60) + " secondes")
 }
+
+/**
+ * Cette fonction permet de trier le tableau des films, par titres
+ * @param {*} tab le tableau à trier
+ * @return {*} tab, le tableau trié par titres
+ */
 function sort(tab){
     write("log.txt","Sort By : Title")
     for (let i = tab.length-1; i > 1; i--) {
@@ -103,6 +120,11 @@ function sort(tab){
     return tab;
 }
 
+/**
+ * Cette fonction permet le tri des dates du tableau
+ * @param {*} tab Le tableau de movies a trier
+ * @return {*} tab Le tableau de movies trié
+ */
 function sort_date_now(tab){
     write("log.txt","Sort By : Date")
     for (let i = tab.length-1; i > 1; i--) {
@@ -116,7 +138,10 @@ function sort_date_now(tab){
     }
     return tab;
 }
-
+/**
+ *Cette fonction permet de lancer la fonction de tri par dates, et écrit les
+ *résultats dans un fichier
+ */
 function sort_date(){
     let start = new Date().getTime();
     let tab = [];
@@ -129,6 +154,11 @@ function sort_date(){
     let stop = new Date().getTime();
     write("log.txt", ("Time exceeded : " + (stop - start) /60) + " secondes")
 }
+
+/**
+ *Cette fonction permet de lancer la fonction de tri par titre, et écrit les
+ *résultats dans un fichier
+ */
 function sort_titre(){
     let start = new Date().getTime();
     let tab = [];
@@ -142,6 +172,11 @@ function sort_titre(){
     write("log.txt", ("Time exceeded : " + (stop - start) /60) + " secondes")
 }
 
+/**
+ * Cette fonction permet d'écrire dans un fichier
+ * @param {*} out Le fichier de sortie
+ * @param {*} thingToWrite la chose à écrire dans le fichier de sortie
+ */
 function write(out, thingToWrite) {
     let fs = require('fs');
     fs.appendFile(out, thingToWrite + "\n", function (err) {
@@ -169,6 +204,7 @@ function search_by_year(){
     let stop = new Date().getTime();
     write("log.txt", ("Time exceeded : " + (stop - start) /60) + " secondes")
 }
+
 function search_by_year_true(i){
     let date = process.argv[3];
         let dateR = moviesTab[i].release_date;

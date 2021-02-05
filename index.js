@@ -248,12 +248,6 @@ function search_by_year_true(i) {
  * @param {*} tab le tableau de films
  */
 function download_images(tab){
-  fs.mkdir(save_path, (err) => {
-    if (err) {
-        throw err;
-    }
-    console.log("Directory is created.");
-});
     const download = (url, path, callback) => { request.head(url, (err, res, body) => {
         request(url).pipe(fs.createWriteStream(path)).on('close', callback)
     })}

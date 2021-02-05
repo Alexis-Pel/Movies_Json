@@ -139,7 +139,7 @@ function write(out, thingToWrite) {
 });
 }
 function search_date(){
-    
+    let start = new Date().getTime();
     if(typeof date == "string" ){
         return "l'année choisis n'est pas au bon format: \nle format doit être à cette exemple: '1970' ";
     }
@@ -156,6 +156,8 @@ function search_date(){
             }
         }
     }
+    let stop = new Date().getTime();
+    write("log.txt", ("Time exceeded : " + (stop - start) /60) + " secondes")
 }
 function search_date_true(i){
     let date = process.argv[3];
